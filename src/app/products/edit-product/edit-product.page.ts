@@ -6,7 +6,7 @@ import {
   LoadingController,
   NavController,
 } from '@ionic/angular';
-import { catchError, throwError } from 'rxjs';
+import { catchError, Subscription, throwError } from 'rxjs';
 import { Product, Subcategory } from '../product.model';
 import { ProductService } from '../product.service';
 
@@ -17,10 +17,12 @@ import { ProductService } from '../product.service';
 })
 export class EditProductPage implements OnInit {
   product!: Product;
-  form!: FormGroup;
+  form: FormGroup;
+  isLoading: boolean;
   subcategory: Subcategory[];
   handlerMessage = '';
   productId: string;
+  private productSub: Subscription;
 
   constructor(
     private loadingController: LoadingController,
@@ -43,6 +45,7 @@ export class EditProductPage implements OnInit {
       { value: 'Otros' },
     ];
     this.productId = '';
+    this.isLoading = false;
   }
 
   ngOnInit() {
@@ -52,39 +55,74 @@ export class EditProductPage implements OnInit {
         return;
       }
       this.productId = param.get('productId');
-      console.log(param.get('productId'));
+      this.isLoading = true;
+      this.productSub = this.productService
+        .getProduct(this.productId)
+        .subscribe(
+          (product) => {
+            this.product = product;
+            this.form = new FormGroup({
+              name: new FormControl(this.product.name, {
+                updateOn: 'blur',
+                validators: [Validators.required, Validators.minLength(4)],
+              }),
+              category: new FormControl(this.product.category, {
+                updateOn: 'blur',
+                validators: [Validators.required],
+              }),
+              subcategory: new FormControl(this.product.subcategory, {
+                updateOn: 'blur',
+                validators: [Validators.required],
+              }),
+              description: new FormControl(this.product.description, {
+                updateOn: 'blur',
+                validators: [Validators.required, Validators.minLength(10)],
+              }),
+              img: new FormControl(this.product.img, {
+                updateOn: 'blur',
+                validators: [
+                  Validators.required,
+                  // Validators.pattern(
+                  //   /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
+                  // ),
+                ],
+              }),
+              price: new FormControl(this.product.price, {
+                updateOn: 'blur',
+                validators: [Validators.required, Validators.min(0)],
+              }),
+            });
+            this.isLoading = false;
+          },
+          (error) => {
+            this.alertController
+              .create({
+                header: 'An error occurred',
+                message: 'Product could not be fetch, please try again later',
+                buttons: [
+                  {
+                    text: 'OK',
+                    handler: () => {
+                      this.router.navigate(['/products']);
+                    },
+                  },
+                ],
+              })
+              .then((alertEl) => {
+                alertEl.present();
+                alertEl.dismiss();
+              });
+          }
+        );
     });
 
     this.form = new FormGroup({
-      name: new FormControl('', {
-        updateOn: 'change',
-        validators: [Validators.required, Validators.minLength(4)],
-      }),
-      category: new FormControl('', {
-        updateOn: 'change',
-        validators: [Validators.required],
-      }),
-      subcategory: new FormControl('', {
-        updateOn: 'change',
-        validators: [Validators.required],
-      }),
-      description: new FormControl('', {
-        updateOn: 'change',
-        validators: [Validators.required, Validators.minLength(10)],
-      }),
-      img: new FormControl('', {
-        updateOn: 'change',
-        validators: [
-          Validators.required,
-          // Validators.pattern(
-          //   /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
-          // ),
-        ],
-      }),
-      price: new FormControl('', {
-        updateOn: 'change',
-        validators: [Validators.required, Validators.min(0)],
-      }),
+      name: new FormControl('', {}),
+      category: new FormControl('', {}),
+      subcategory: new FormControl('', {}),
+      description: new FormControl('', {}),
+      img: new FormControl('', {}),
+      price: new FormControl('', {}),
     });
   }
 
@@ -192,5 +230,11 @@ export class EditProductPage implements OnInit {
     });
     await alert.present();
     await alert.onDidDismiss();
+  }
+
+  ngOnDestroy() {
+    if (this.productSub) {
+      this.productSub.unsubscribe();
+    }
   }
 }

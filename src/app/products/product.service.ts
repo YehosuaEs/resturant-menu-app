@@ -26,10 +26,10 @@ export class ProductService {
       }>(`${this.DATABASE_API_URL}.json`)
       .pipe(
         map((resData) => {
-          const places = [];
+          const products = [];
           for (const key in resData) {
             if (resData.hasOwnProperty(key)) {
-              places.push(
+              products.push(
                 new Product(
                   key,
                   resData[key].name,
@@ -42,12 +42,28 @@ export class ProductService {
               );
             }
           }
-          return places;
+          return products;
         }),
         tap((products) => {
           this._products.next(products);
         })
       );
+  }
+
+  getProduct(id: string) {
+    return this.http.get<Product>(`${this.DATABASE_API_URL}/${id}.json`).pipe(
+      map((productData) => {
+        return new Product(
+          id,
+          productData.name,
+          productData.category,
+          productData.subcategory,
+          productData.description,
+          productData.img,
+          productData.price
+        );
+      })
+    );
   }
 
   addProduct(
