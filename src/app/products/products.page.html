@@ -16,8 +16,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row *ngIf="isLoading">
+  <ion-grid *ngIf="isLoading">
+    <ion-row>
       <ion-col sizeSm="6" offsetSm="3" class="ion-text-center no_content">
         <div>
           <ion-spinner color="primary" name="dots"></ion-spinner>
@@ -38,7 +38,24 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="!isLoading && products.length > 0">
+  </ion-grid>
+  <ion-grid *ngIf="!isLoading && products.length > 0">
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
+        <ion-card class="ion-text-start">
+          <ion-img [src]="products[10].img"></ion-img>
+          <ion-card-header>
+            <ion-card-title>{{products[10].name}}</ion-card-title>
+            <ion-note>{{products[10].subcategory}}</ion-note>
+            <ion-card-subtitle>{{products[10].description}}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content class="ion-text-end">
+            <p>{{products[10].price}}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
         <ion-list *ngIf="!isLoading && products.length > 0">
           <ion-item-sliding *ngFor="let item of products" #slidingItem>

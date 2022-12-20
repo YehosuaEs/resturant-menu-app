@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { ProductService } from './product.service';
@@ -8,7 +8,6 @@ import {
   AlertController,
   IonItemSliding,
   LoadingController,
-  NavController,
   ToastController,
 } from '@ionic/angular';
 
