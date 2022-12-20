@@ -123,7 +123,7 @@ export class NewProductPage implements OnInit {
       });
   }
 
-  async onConfirmAddProdut() {
+  async onConfirmAddProduct() {
     const alert = await this.alertController.create({
       header: 'Please confirm!',
       message: 'Are you sure you want to add this product?',

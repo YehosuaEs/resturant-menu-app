@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, map, of, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Product } from './product.model';
@@ -84,5 +84,50 @@ export class ProductService {
           this._products.next(places.concat(newProduct));
         })
       );
+  }
+
+  updateProduct(
+    productId: string,
+    name: string,
+    category: string,
+    subcategory: string,
+    description: string,
+    img: string,
+    price: number
+  ) {
+    let updateProduct: Product[];
+    return this.products.pipe(
+      take(1),
+      switchMap((products) => {
+        if (!products || products.length <= 0) {
+          return this.fetchPeoducts();
+        } else {
+          return of(products);
+        }
+      }),
+      switchMap((products) => {
+        const updateProductIndex = products.findIndex(
+          (p) => p.id === productId
+        );
+        updateProduct = [...products];
+        const oldProduct = updateProduct[updateProductIndex];
+        updateProduct[updateProductIndex] = new Product(
+          oldProduct.id,
+          name,
+          category,
+          subcategory,
+          description,
+          img,
+          price
+        );
+        return this.http.put(`${this.DATABASE_API_URL}/${productId}.json`, {
+          ...updateProduct[updateProductIndex],
+          id: null,
+        });
+      }),
+      tap(() => {
+        this._products.next(updateProduct);
+      })
+    );
   }
 }
