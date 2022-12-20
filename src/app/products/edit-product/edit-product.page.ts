@@ -5,6 +5,7 @@ import {
   AlertController,
   LoadingController,
   NavController,
+  ToastController,
 } from '@ionic/angular';
 import { catchError, Subscription, throwError } from 'rxjs';
 import { Product, Subcategory } from '../product.model';
@@ -30,7 +31,8 @@ export class EditProductPage implements OnInit {
     private navController: NavController,
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private toastController: ToastController
   ) {
     this.subcategory = [
       { value: 'Botanitas' },
@@ -190,6 +192,7 @@ export class EditProductPage implements OnInit {
           role: 'confirm',
           handler: () => {
             this.onEditProduct();
+            this.presentToast();
             this.handlerMessage = 'Alert confirmed';
           },
         },
@@ -198,6 +201,22 @@ export class EditProductPage implements OnInit {
     await alert.present();
     await alert.onDidDismiss();
   }
+
+  presentToast() {
+    this.toastController
+      .create({
+        message: 'Product was update successfully!',
+        duration: 3000,
+        position: 'top',
+        icon: 'cloud-done',
+        color: 'success',
+      })
+      .then((el) => {
+        el.onDidDismiss();
+        el.present();
+      });
+  }
+
   async onGoBack() {
     const alert = await this.alertController.create({
       header: 'Please confirm!',

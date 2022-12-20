@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ProductService } from './product.service';
 import { Product } from './product.model';
 import {
+  AlertController,
   IonItemSliding,
   LoadingController,
   NavController,
@@ -24,8 +25,9 @@ export class ProductsPage implements OnInit, OnDestroy {
   constructor(
     private productService: ProductService,
     private loadingController: LoadingController,
-    private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController,
+    private router: Router
   ) {
     this.products = [];
     this.isLoading = false;
@@ -47,7 +49,6 @@ export class ProductsPage implements OnInit, OnDestroy {
   onEdit(productId: string, sliding: IonItemSliding) {
     sliding.close();
     this.router.navigate(['/', 'products', 'edit', productId]);
-    console.log('Edit');
   }
 
   onDelete(productId: string, sliding: IonItemSliding) {
@@ -67,10 +68,35 @@ export class ProductsPage implements OnInit, OnDestroy {
       });
   }
 
+  async onConfirmEditProduct(productId: string, sliding: IonItemSliding) {
+    const alert = await this.alertController.create({
+      header: 'Please confirm!',
+      message: 'Are you sure you want to delete this product?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            sliding.close();
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            this.onDelete(productId, sliding);
+          },
+        },
+      ],
+    });
+    await alert.present();
+    await alert.onDidDismiss();
+  }
+
   presentToast() {
     this.toastController
       .create({
-        message: 'Product was deleted successfully!',
+        message: 'The product was successfully deleted!',
         duration: 3000,
         position: 'top',
         icon: 'cloud-done',

@@ -2,7 +2,11 @@ import { ProductService } from './../product.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  ToastController,
+} from '@ionic/angular';
 import { Subcategory } from '../product.model';
 import { catchError, throwError } from 'rxjs';
 
@@ -19,6 +23,7 @@ export class NewProductPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private productService: ProductService,
+    private toastController: ToastController,
     private router: Router
   ) {
     this.subcategory = [
@@ -118,6 +123,7 @@ export class NewProductPage implements OnInit {
           .subscribe(() => {
             this.form.reset();
             loadingEl.dismiss();
+            this.presentToast();
             this.router.navigate(['/products']);
           });
       });
@@ -147,6 +153,21 @@ export class NewProductPage implements OnInit {
     });
     await alert.present();
     await alert.onDidDismiss();
+  }
+
+  presentToast() {
+    this.toastController
+      .create({
+        message: 'The product was successfully added!',
+        duration: 3000,
+        position: 'top',
+        icon: 'cloud-done',
+        color: 'success',
+      })
+      .then((el) => {
+        el.onDidDismiss();
+        el.present();
+      });
   }
 
   async onGoBack() {
