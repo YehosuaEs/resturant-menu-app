@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, map, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Product } from './product.model';
@@ -14,11 +14,41 @@ export class ProductService {
   private _products = new BehaviorSubject<Product[]>([]);
 
   get products() {
-    // return [...this._places];
     return this._products.asObservable();
   }
 
   constructor(private http: HttpClient) {}
+
+  fetchPeoducts() {
+    return this.http
+      .get<{
+        [key: string]: Product;
+      }>(`${this.DATABASE_API_URL}.json`)
+      .pipe(
+        map((resData) => {
+          const places = [];
+          for (const key in resData) {
+            if (resData.hasOwnProperty(key)) {
+              places.push(
+                new Product(
+                  key,
+                  resData[key].name,
+                  resData[key].category,
+                  resData[key].subcategory,
+                  resData[key].description,
+                  resData[key].img,
+                  resData[key].price
+                )
+              );
+            }
+          }
+          return places;
+        }),
+        tap((products) => {
+          this._products.next(products);
+        })
+      );
+  }
 
   addProduct(
     name: string,
