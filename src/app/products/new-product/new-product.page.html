@@ -10,7 +10,10 @@
           </ion-buttons>
           <ion-title>Add a new product</ion-title>
           <ion-buttons slot="primary">
-            <ion-button (click)="onConfirmAddProdut()" [disabled]="!form.valid">
+            <ion-button
+              (click)="onConfirmAddProduct()"
+              [disabled]="!form.valid"
+            >
               <ion-icon slot="icon-only" name="checkmark"></ion-icon>
             </ion-button>
           </ion-buttons>
