@@ -9,3 +9,7 @@ export class Product {
     public price: number
   ) {}
 }
+
+export interface Subcategory {
+  value: string;
+}

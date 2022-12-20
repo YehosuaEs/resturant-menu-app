@@ -1,18 +1,23 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="onGoBack()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Add a new product</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button (click)="onCreateProduct()" [disabled]="!form.valid">
-        <!-- <ion-button (click)="onCreateProduct()" [disabled]="!form.valid"> -->
-        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="onGoBack()">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Add a new product</ion-title>
+          <ion-buttons slot="primary">
+            <ion-button (click)="onConfirmAddProdut()" [disabled]="!form.valid">
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
 <ion-content>
@@ -31,38 +36,80 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="!form.get('name')?.valid && form.get('name')?.touched">
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>Please enter a product name</p>
+        </ion-col>
+      </ion-row>
+
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item>
-            <ion-label position="floating">Category</ion-label>
-            <ion-input
-              type="text"
-              autocomplete
-              autocorrect
-              formControlName="category"
-            ></ion-input>
-          </ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Category</ion-label>
+              <ion-select
+                interface="action-sheet"
+                placeholder="Select category"
+                formControlName="category"
+              >
+                <ion-select-option value="food">Food</ion-select-option>
+                <ion-select-option value="drinks">Drinks</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="!form.get('category')?.valid && form.get('category')?.touched"
+      >
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>Please select a category</p>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item>
-            <ion-label position="floating">Subcategory</ion-label>
-            <ion-input
-              type="text"
-              autocomplete
-              autocorrect
-              formControlName="subcategory"
-            ></ion-input>
-          </ion-item>
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Subcategory</ion-label>
+              <ion-select
+                interface="action-sheet"
+                placeholder="Select Subcategory"
+                formControlName="subcategory"
+              >
+                <ion-select-option
+                  *ngFor="let item of subcategory"
+                  [value]="item.value"
+                  >{{item.value}}</ion-select-option
+                >
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="!form.get('subcategory')?.valid && form.get('subcategory')?.touched"
+      >
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>Please select a subcategory</p>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item>
+          <ion-item counter="true">
             <ion-label position="floating">Description</ion-label>
-            <ion-textarea rows="2" formControlName="description"></ion-textarea>
+            <ion-textarea
+              rows="2"
+              formControlName="description"
+              maxlength="150"
+            ></ion-textarea>
           </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="!form.get('description')?.valid && form.get('description')?.touched"
+      >
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>Description must be between 3 and 150 characters</p>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -78,12 +125,22 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row *ngIf="!form.get('img')?.valid && form.get('img')?.touched">
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>Please enter a valid url image</p>
+        </ion-col>
+      </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
           <ion-item>
             <ion-label position="floating">Price</ion-label>
             <ion-input type="number" formControlName="price"></ion-input>
           </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="!form.get('price')?.valid && form.get('price')?.touched">
+        <ion-col sizeSm="6" offsetSm="3">
+          <p>You must enter a price</p>
         </ion-col>
       </ion-row>
     </ion-grid>
