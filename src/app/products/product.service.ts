@@ -66,6 +66,20 @@ export class ProductService {
     );
   }
 
+  deleteProduct(productId: string) {
+    return this.http
+      .delete<Product>(`${this.DATABASE_API_URL}/${productId}.json`)
+      .pipe(
+        switchMap(() => {
+          return this.products;
+        }),
+        take(1),
+        tap((products) => {
+          this._products.next(products.filter((b) => b.id !== productId));
+        })
+      );
+  }
+
   addProduct(
     name: string,
     category: string,
