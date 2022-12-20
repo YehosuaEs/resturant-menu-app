@@ -1,12 +1,66 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Products</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button routerLink="/products/create">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-toolbar>
+          <ion-title>Products</ion-title>
+          <ion-buttons slot="primary">
+            <ion-button routerLink="/products/create">
+              <ion-icon name="add" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="isLoading">
+      <ion-col sizeSm="6" offsetSm="3" class="ion-text-center no_content">
+        <div>
+          <ion-spinner color="primary" name="dots"></ion-spinner>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isLoading && products.length <= 0">
+      <ion-col sizeSm="6" offsetSm="3" class="ion-text-center no_content">
+        <div>
+          <p>
+            There is not products in your database! <br />
+            Please create one first!
+          </p>
+
+          <ion-button color="primary" routerLink="/products/create"
+            >Add New Product</ion-button
+          >
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isLoading && products.length > 0">
+      <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
+        <ion-list *ngIf="!isLoading && products.length > 0">
+          <ion-item-sliding *ngFor="let item of products" #slidingItem>
+            <app-product-item [product]="item"></app-product-item>
+
+            <ion-item-options side="end">
+              <ion-item-option
+                (click)="onEdit(item.id, slidingItem)"
+                color="warning"
+              >
+                <ion-icon name="create-outline"></ion-icon>
+              </ion-item-option>
+              <ion-item-option
+                (click)="onDelete(item.id, slidingItem)"
+                color="danger"
+              >
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

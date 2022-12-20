@@ -1,0 +1,11 @@
+<ion-item routerLink="/products/detail/{{ product.id }}">
+  <ion-thumbnail>
+    <img [src]="product.img" />
+  </ion-thumbnail>
+
+  <ion-label>
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <span>{{ product.price | currency : "EUR" }}</span>
+  </ion-label>
+</ion-item>
