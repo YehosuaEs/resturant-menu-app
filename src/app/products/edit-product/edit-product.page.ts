@@ -50,14 +50,6 @@ export class EditProductPage implements OnInit {
 
   ngOnInit() {
     this.isLoading = true;
-    // this.form = new FormGroup({
-    //   name: new FormControl('', {}),
-    //   category: new FormControl('', {}),
-    //   subcategory: new FormControl('', {}),
-    //   description: new FormControl('', {}),
-    //   img: new FormControl('', {}),
-    //   price: new FormControl('', {}),
-    // });
     setTimeout(() => {
       this.route.paramMap.subscribe((param) => {
         if (!param.has('productId')) {
@@ -65,7 +57,6 @@ export class EditProductPage implements OnInit {
           return;
         }
         this.productId = param.get('productId');
-        // this.isLoading = true;
         this.productSub = this.productService
           .getProduct(this.productId)
           .subscribe(
