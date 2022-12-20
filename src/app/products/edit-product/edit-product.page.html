@@ -25,7 +25,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <form [formGroup]="form">
+  <form [formGroup]="form" *ngIf="!isLoading">
     <ion-grid>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">

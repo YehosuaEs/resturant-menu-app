@@ -49,81 +49,83 @@ export class EditProductPage implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe((param) => {
-      if (!param.has('productId')) {
-        this.navController.navigateBack('/products');
-        return;
-      }
-      this.productId = param.get('productId');
-      this.isLoading = true;
-      this.productSub = this.productService
-        .getProduct(this.productId)
-        .subscribe(
-          (product) => {
-            this.product = product;
-            this.form = new FormGroup({
-              name: new FormControl(this.product.name, {
-                updateOn: 'blur',
-                validators: [Validators.required, Validators.minLength(4)],
-              }),
-              category: new FormControl(this.product.category, {
-                updateOn: 'blur',
-                validators: [Validators.required],
-              }),
-              subcategory: new FormControl(this.product.subcategory, {
-                updateOn: 'blur',
-                validators: [Validators.required],
-              }),
-              description: new FormControl(this.product.description, {
-                updateOn: 'blur',
-                validators: [Validators.required, Validators.minLength(10)],
-              }),
-              img: new FormControl(this.product.img, {
-                updateOn: 'blur',
-                validators: [
-                  Validators.required,
-                  // Validators.pattern(
-                  //   /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
-                  // ),
-                ],
-              }),
-              price: new FormControl(this.product.price, {
-                updateOn: 'blur',
-                validators: [Validators.required, Validators.min(0)],
-              }),
-            });
-            this.isLoading = false;
-          },
-          (error) => {
-            this.alertController
-              .create({
-                header: 'An error occurred',
-                message: 'Product could not be fetch, please try again later',
-                buttons: [
-                  {
-                    text: 'OK',
-                    handler: () => {
-                      this.router.navigate(['/products']);
-                    },
-                  },
-                ],
-              })
-              .then((alertEl) => {
-                alertEl.present();
-                alertEl.dismiss();
+    this.isLoading = true;
+    // this.form = new FormGroup({
+    //   name: new FormControl('', {}),
+    //   category: new FormControl('', {}),
+    //   subcategory: new FormControl('', {}),
+    //   description: new FormControl('', {}),
+    //   img: new FormControl('', {}),
+    //   price: new FormControl('', {}),
+    // });
+    setTimeout(() => {
+      this.route.paramMap.subscribe((param) => {
+        if (!param.has('productId')) {
+          this.navController.navigateBack('/products');
+          return;
+        }
+        this.productId = param.get('productId');
+        // this.isLoading = true;
+        this.productSub = this.productService
+          .getProduct(this.productId)
+          .subscribe(
+            (product) => {
+              this.product = product;
+              this.form = new FormGroup({
+                name: new FormControl(this.product.name, {
+                  updateOn: 'blur',
+                  validators: [Validators.required, Validators.minLength(4)],
+                }),
+                category: new FormControl(this.product.category, {
+                  updateOn: 'blur',
+                  validators: [Validators.required],
+                }),
+                subcategory: new FormControl(this.product.subcategory, {
+                  updateOn: 'blur',
+                  validators: [Validators.required],
+                }),
+                description: new FormControl(this.product.description, {
+                  updateOn: 'blur',
+                  validators: [Validators.required, Validators.minLength(10)],
+                }),
+                img: new FormControl(this.product.img, {
+                  updateOn: 'blur',
+                  validators: [
+                    Validators.required,
+                    // Validators.pattern(
+                    //   /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
+                    // ),
+                  ],
+                }),
+                price: new FormControl(this.product.price, {
+                  updateOn: 'blur',
+                  validators: [Validators.required, Validators.min(0)],
+                }),
               });
-          }
-        );
-    });
-
-    this.form = new FormGroup({
-      name: new FormControl('', {}),
-      category: new FormControl('', {}),
-      subcategory: new FormControl('', {}),
-      description: new FormControl('', {}),
-      img: new FormControl('', {}),
-      price: new FormControl('', {}),
-    });
+              this.isLoading = false;
+            },
+            (error) => {
+              this.alertController
+                .create({
+                  header: 'An error occurred',
+                  message: 'Product could not be fetch, please try again later',
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: () => {
+                        this.router.navigate(['/products']);
+                      },
+                    },
+                  ],
+                })
+                .then((alertEl) => {
+                  alertEl.present();
+                  alertEl.dismiss();
+                });
+            }
+          );
+      });
+    }, 500);
   }
 
   onEditProduct() {
