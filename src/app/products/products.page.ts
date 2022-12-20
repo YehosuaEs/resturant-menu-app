@@ -1,10 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { ProductService } from './product.service';
 import { Product } from './product.model';
-import { IonItemSliding } from '@ionic/angular';
+import {
+  IonItemSliding,
+  LoadingController,
+  NavController,
+  ToastController,
+} from '@ionic/angular';
 
 @Component({
   selector: 'app-products',
@@ -14,15 +19,20 @@ import { IonItemSliding } from '@ionic/angular';
 export class ProductsPage implements OnInit, OnDestroy {
   products: Product[];
   isLoading: boolean;
-  private placesSub!: Subscription;
+  private productsSub!: Subscription;
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(
+    private productService: ProductService,
+    private loadingController: LoadingController,
+    private router: Router,
+    private toastController: ToastController
+  ) {
     this.products = [];
     this.isLoading = false;
   }
 
   ngOnInit() {
-    this.placesSub = this.productService.products.subscribe((products) => {
+    this.productsSub = this.productService.products.subscribe((products) => {
       this.products = products;
     });
   }
@@ -39,14 +49,40 @@ export class ProductsPage implements OnInit, OnDestroy {
     this.router.navigate(['/', 'products', 'edit', productId]);
     console.log('Edit');
   }
+
   onDelete(productId: string, sliding: IonItemSliding) {
     sliding.close();
-    console.log('delete' + productId);
+
+    this.loadingController
+      .create({
+        spinner: 'dots',
+        message: 'Please wait! We are deleting this product',
+      })
+      .then((loadingEl) => {
+        loadingEl.present();
+        this.productService.deleteProduct(productId).subscribe(() => {
+          loadingEl.dismiss();
+          this.presentToast();
+        });
+      });
+  }
+
+  presentToast() {
+    this.toastController
+      .create({
+        message: 'Product was deleted successfully',
+        duration: 3000,
+        position: 'top',
+      })
+      .then((el) => {
+        el.onDidDismiss();
+        el.present();
+      });
   }
 
   ngOnDestroy(): void {
-    if (this.placesSub) {
-      this.placesSub.unsubscribe();
+    if (this.productsSub) {
+      this.productsSub.unsubscribe();
     }
   }
 }
