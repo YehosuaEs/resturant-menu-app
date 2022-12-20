@@ -7,3 +7,7 @@ p {
 ion-col {
   padding: 0;
 }
+
+::ng-deep .action-sheet-group {
+  max-height: 40%;
+}

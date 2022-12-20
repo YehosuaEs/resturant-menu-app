@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, switchMap, take, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { Product } from './product.model';
@@ -13,6 +13,11 @@ export class ProductService {
 
   private _products = new BehaviorSubject<Product[]>([]);
 
+  get products() {
+    // return [...this._places];
+    return this._products.asObservable();
+  }
+
   constructor(private http: HttpClient) {}
 
   addProduct(
@@ -24,7 +29,7 @@ export class ProductService {
     price: number
   ) {
     let generatedId: string;
-    const newPlace = new Product(
+    const newProduct = new Product(
       Math.random().toString(),
       name,
       category,
@@ -33,5 +38,21 @@ export class ProductService {
       img,
       price
     );
+    return this.http
+      .post<{ name: string }>(`${this.DATABASE_API_URL}.json`, {
+        ...newProduct,
+        id: null,
+      })
+      .pipe(
+        switchMap((resData) => {
+          generatedId = resData.name;
+          return this.products;
+        }),
+        take(1),
+        tap((places) => {
+          newProduct.id = generatedId;
+          this._products.next(places.concat(newProduct));
+        })
+      );
   }
 }

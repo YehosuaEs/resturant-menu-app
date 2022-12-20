@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Subcategory } from '../product.model';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-new-product',
@@ -37,23 +38,23 @@ export class NewProductPage implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       name: new FormControl('', {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required, Validators.minLength(4)],
       }),
       category: new FormControl('', {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required],
       }),
       subcategory: new FormControl('', {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required],
       }),
       description: new FormControl('', {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required, Validators.minLength(10)],
       }),
       img: new FormControl('', {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [
           Validators.required,
           // Validators.pattern(
@@ -62,13 +63,91 @@ export class NewProductPage implements OnInit {
         ],
       }),
       price: new FormControl('', {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required, Validators.min(0)],
       }),
     });
   }
 
-  onCreateProduct() {}
+  onCreateProduct() {
+    if (!this.form.valid) {
+      return;
+    }
+
+    this.loadingController
+      .create({
+        spinner: 'bubbles',
+        message: 'Creating new product... please wait!',
+      })
+      .then((loadingEl) => {
+        loadingEl.present();
+        this.productService
+          .addProduct(
+            this.form.value.name,
+            this.form.value.category,
+            this.form.value.subcategory,
+            this.form.value.description,
+            this.form.value.img,
+            +this.form.value.price
+          )
+          .pipe(
+            catchError((err) => {
+              this.alertController
+                .create({
+                  header: 'An error occurred',
+                  message:
+                    'The product could not be added, please try again later',
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: () => {
+                        this.form.reset();
+                        this.router.navigate(['/products']);
+                      },
+                    },
+                  ],
+                })
+                .then((alertEl) => {
+                  loadingEl.dismiss();
+                  alertEl.present();
+                  alertEl.onDidDismiss();
+                });
+              return throwError(err);
+            })
+          )
+          .subscribe(() => {
+            this.form.reset();
+            loadingEl.dismiss();
+            this.router.navigate(['/products']);
+          });
+      });
+  }
+
+  async onConfirmAddProdut() {
+    const alert = await this.alertController.create({
+      header: 'Please confirm!',
+      message: 'Are you sure you want to add this product?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            this.onCreateProduct();
+            this.handlerMessage = 'Alert confirmed';
+          },
+        },
+      ],
+    });
+    await alert.present();
+    await alert.onDidDismiss();
+  }
 
   async onGoBack() {
     const alert = await this.alertController.create({
