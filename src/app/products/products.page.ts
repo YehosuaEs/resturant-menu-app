@@ -70,9 +70,11 @@ export class ProductsPage implements OnInit, OnDestroy {
   presentToast() {
     this.toastController
       .create({
-        message: 'Product was deleted successfully',
+        message: 'Product was deleted successfully!',
         duration: 3000,
         position: 'top',
+        icon: 'cloud-done',
+        color: 'success',
       })
       .then((el) => {
         el.onDidDismiss();
