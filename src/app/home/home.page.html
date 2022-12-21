@@ -1,6 +1,46 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title> HOME </ion-title>
-  </ion-toolbar>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+          </ion-buttons>
+          <ion-title> Restaurant </ion-title>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
-<ion-content> </ion-content>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <div class="title_content">
+          <h2>DELICIOUSLY</h2>
+          <h1>FOOD</h1>
+          <p>The best food in town</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <div class="buttons_container">
+          <ion-button shape="round" fill="solid" class="btn btn_book"
+            >BOOK A TABLE</ion-button
+          >
+          <ion-button
+            shape="round"
+            fill="outline"
+            class="btn btn_menu"
+            routerLink="/products"
+            >WATCH MENU</ion-button
+          >
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

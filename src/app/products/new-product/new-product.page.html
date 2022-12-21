@@ -1,11 +1,11 @@
 <ion-header>
   <ion-grid class="ion-no-padding">
     <ion-row>
-      <ion-col sizeSm="6" offsetSm="3">
+      <ion-col>
         <ion-toolbar>
           <ion-buttons slot="start">
             <ion-button (click)="onGoBack()">
-              <ion-icon name="chevron-back-outline"></ion-icon>
+              <ion-icon name="chevron-back-outline" color="primary"></ion-icon>
             </ion-button>
           </ion-buttons>
           <ion-title>Add a new product</ion-title>
@@ -14,7 +14,11 @@
               (click)="onConfirmAddProduct()"
               [disabled]="!form.valid"
             >
-              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+              <ion-icon
+                slot="icon-only"
+                name="checkmark"
+                color="success"
+              ></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
@@ -28,8 +32,10 @@
     <ion-grid>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item>
-            <ion-label position="floating">Product Name</ion-label>
+          <ion-item lines="none">
+            <ion-label class="label" position="floating"
+              >Product Name</ion-label
+            >
             <ion-input
               type="text"
               autocomplete
@@ -48,7 +54,7 @@
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
           <ion-list>
-            <ion-item>
+            <ion-item lines="none">
               <ion-label position="floating">Category</ion-label>
               <ion-select
                 interface="action-sheet"
@@ -72,7 +78,7 @@
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
           <ion-list>
-            <ion-item>
+            <ion-item lines="none">
               <ion-label position="floating">Subcategory</ion-label>
               <ion-select
                 interface="action-sheet"
@@ -98,7 +104,7 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item counter="true">
+          <ion-item counter="true" lines="none">
             <ion-label position="floating">Description</ion-label>
             <ion-textarea
               rows="3"
@@ -117,7 +123,7 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Url Image</ion-label>
             <ion-input
               type="text"
@@ -135,7 +141,7 @@
       </ion-row>
       <ion-row>
         <ion-col sizeSm="6" offsetSm="3">
-          <ion-item>
+          <ion-item lines="none">
             <ion-label position="floating">Price</ion-label>
             <ion-input type="number" formControlName="price"></ion-input>
           </ion-item>

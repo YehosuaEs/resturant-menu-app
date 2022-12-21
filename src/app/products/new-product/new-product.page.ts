@@ -123,8 +123,8 @@ export class NewProductPage implements OnInit {
           .subscribe(() => {
             this.form.reset();
             loadingEl.dismiss();
-            this.presentToast();
             this.router.navigate(['/products']);
+            this.presentToast();
           });
       });
   }

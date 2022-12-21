@@ -80,14 +80,12 @@ export class DetailProductPage implements OnInit {
       })
       .then((loadingEl) => {
         loadingEl.present();
-        setTimeout(() => {
-          this.productService.deleteProduct(this.productId).subscribe(() => {
-            loadingEl.dismiss();
-          });
-        }, 800);
+        this.productService.deleteProduct(this.productId).subscribe(() => {
+          loadingEl.dismiss();
+          this.router.navigate(['/', 'products']);
+        });
         setTimeout(() => {
           this.presentToast();
-          this.router.navigate(['/', 'products']);
         }, 700);
       });
   }
