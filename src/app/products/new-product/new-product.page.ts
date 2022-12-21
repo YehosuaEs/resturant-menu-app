@@ -83,6 +83,7 @@ export class NewProductPage implements OnInit {
       .create({
         spinner: 'bubbles',
         message: 'Creating new product... please wait!',
+        cssClass: 'custom-loading',
       })
       .then((loadingEl) => {
         loadingEl.present();

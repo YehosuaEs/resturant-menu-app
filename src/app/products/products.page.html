@@ -4,18 +4,23 @@
       <ion-col>
         <ion-toolbar>
           <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
+            <ion-menu-button color="light"></ion-menu-button>
           </ion-buttons>
-          <ion-title>Menu </ion-title>
+          <ion-title color="light">Menu </ion-title>
           <ion-buttons slot="primary">
             <ion-button routerLink="/products/create">
-              <ion-icon name="add" slot="icon-only" color="primary"></ion-icon>
+              <ion-icon name="add" slot="icon-only" color="light"></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-progress-bar
+    *ngIf="isLoading"
+    type="indeterminate"
+    color="danger"
+  ></ion-progress-bar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -55,13 +60,9 @@
             style="width: 100%; height: 200px"
           ></ion-img>
           <ion-card-header>
-            <ion-card-title color="primary"
-              >{{products[randomId].name}}</ion-card-title
-            >
-            <ion-note color="primary"
-              >{{products[randomId].subcategory}}</ion-note
-            >
-            <ion-card-subtitle color="primary"
+            <ion-card-title>{{products[randomId].name}}</ion-card-title>
+            <ion-note>{{products[randomId].subcategory}}</ion-note>
+            <ion-card-subtitle
               >{{products[randomId].description}}</ion-card-subtitle
             >
           </ion-card-header>
