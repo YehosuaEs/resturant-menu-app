@@ -1,11 +1,11 @@
 <ion-header>
   <ion-grid class="ion-no-padding">
     <ion-row>
-      <ion-col sizeSm="6" offsetSm="3">
+      <ion-col>
         <ion-toolbar>
           <ion-buttons slot="start">
             <ion-button (click)="onGoBack()">
-              <ion-icon name="chevron-back-outline"></ion-icon>
+              <ion-icon name="chevron-back-outline" color="primary"></ion-icon>
             </ion-button>
           </ion-buttons>
 
@@ -15,6 +15,11 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-progress-bar
+    *ngIf="isLoading"
+    type="indeterminate"
+    color="danger"
+  ></ion-progress-bar>
 </ion-header>
 
 <ion-content>

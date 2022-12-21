@@ -77,6 +77,8 @@ export class DetailProductPage implements OnInit {
       .create({
         spinner: 'bubbles',
         message: ' Please wait! We are deleting this product',
+        cssClass: 'custom-loading',
+        
       })
       .then((loadingEl) => {
         loadingEl.present();
