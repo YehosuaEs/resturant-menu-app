@@ -171,6 +171,7 @@ export class EditProductPage implements OnInit {
             this.form.reset();
             loadingEl.dismiss();
             this.router.navigate(['/products']);
+            this.presentToast();
           });
       });
   }
@@ -192,7 +193,7 @@ export class EditProductPage implements OnInit {
           role: 'confirm',
           handler: () => {
             this.onEditProduct();
-            this.presentToast();
+
             this.handlerMessage = 'Alert confirmed';
           },
         },

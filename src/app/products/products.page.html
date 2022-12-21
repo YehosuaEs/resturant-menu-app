@@ -16,8 +16,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row *ngIf="isLoading">
+  <ion-grid *ngIf="isLoading">
+    <ion-row>
       <ion-col sizeSm="6" offsetSm="3" class="ion-text-center no_content">
         <div>
           <ion-spinner color="primary" name="dots"></ion-spinner>
@@ -38,11 +38,44 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="!isLoading && products.length > 0">
+  </ion-grid>
+  <ion-grid *ngIf="!isLoading && products.length > 0">
+    <ion-row>
       <ion-col sizeSm="6" offsetSm="3" class="ion-text-center">
+        <ion-card
+          class="ion-text-start card_container"
+          [routerLink]="['/','products','detail',products[randomId].id]"
+        >
+          <ion-img
+            [src]="products[randomId].img"
+            [alt]="products[randomId].name"
+            style="width: 100%; height: 200px"
+          ></ion-img>
+          <ion-card-header>
+            <ion-card-title>{{products[randomId].name}}</ion-card-title>
+            <ion-note>{{products[randomId].subcategory}}</ion-note>
+            <ion-card-subtitle
+              >{{products[randomId].description}}</ion-card-subtitle
+            >
+          </ion-card-header>
+          <ion-card-content class="ion-text-end">
+            <b>{{products[randomId].price | currency :'EUR'}}</b>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor="let item of products">
+      <ion-col
+        sizeSm="6"
+        offsetSm="3"
+        class="ion-text-center"
+        *ngIf="item.category === 'food' "
+      >
         <ion-list *ngIf="!isLoading && products.length > 0">
-          <ion-item-sliding *ngFor="let item of products" #slidingItem>
-            <app-product-item [product]="item"></app-product-item>
+          <ion-item-sliding #slidingItem>
+            <span>
+              <app-product-item [product]="item"></app-product-item>
+            </span>
 
             <ion-item-options side="end">
               <ion-item-option
@@ -52,7 +85,7 @@
                 <ion-icon name="create-outline"></ion-icon>
               </ion-item-option>
               <ion-item-option
-                (click)="onConfirmEditProduct(item.id, slidingItem)"
+                (click)="onConfirmDeleteProduct(item.id, slidingItem)"
                 color="danger"
               >
                 <ion-icon name="trash-outline"></ion-icon>
