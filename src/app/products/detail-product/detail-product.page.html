@@ -8,6 +8,7 @@
               <ion-icon name="chevron-back-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
+
           <ion-title *ngIf="isLoading"> Loading... please wait </ion-title>
           <ion-title *ngIf="!isLoading"> {{product.subcategory}} </ion-title>
         </ion-toolbar>

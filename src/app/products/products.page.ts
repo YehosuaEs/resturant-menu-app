@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -6,6 +6,7 @@ import { ProductService } from './product.service';
 import { Product } from './product.model';
 import {
   AlertController,
+  IonContent,
   IonItemSliding,
   LoadingController,
   ToastController,
@@ -17,6 +18,7 @@ import {
   styleUrls: ['./products.page.scss'],
 })
 export class ProductsPage implements OnInit, OnDestroy {
+  @ViewChild(IonContent) content: IonContent;
   products: Product[];
   isLoading: boolean;
   randomId: number;
@@ -64,7 +66,9 @@ export class ProductsPage implements OnInit, OnDestroy {
         loadingEl.present();
         this.productService.deleteProduct(productId).subscribe(() => {
           loadingEl.dismiss();
-          this.presentToast();
+          setTimeout(() => {
+            this.presentToast();
+          }, 700);
         });
       });
   }
@@ -109,6 +113,9 @@ export class ProductsPage implements OnInit, OnDestroy {
       });
   }
 
+  scrollToTop() {
+    this.content.scrollToTop(500);
+  }
   ngOnDestroy(): void {
     if (this.productsSub) {
       this.productsSub.unsubscribe();
