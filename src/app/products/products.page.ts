@@ -48,21 +48,16 @@ export class ProductsPage implements OnInit, OnDestroy {
     });
   }
 
-  onDetail(productId: string) {
-    console.log(productId);
-
-    // this.router.navigate(['/', 'products', 'detail', productId]);
-  }
   onEdit(productId: string, sliding: IonItemSliding) {
     sliding.close();
     this.router.navigate(['/', 'products', 'edit', productId]);
   }
+
   onDelete(productId: string, sliding: IonItemSliding) {
     sliding.close();
-
     this.loadingController
       .create({
-        spinner: 'dots',
+        spinner: 'bubbles',
         message: 'Please wait! We are deleting this product',
       })
       .then((loadingEl) => {

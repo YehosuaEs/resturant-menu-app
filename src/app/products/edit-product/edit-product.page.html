@@ -1,18 +1,24 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-button (click)="onGoBack()">
-        <ion-icon name="chevron-back-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-title>Edit Products</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button (click)="onConfirmEditProduct()">
-        <!-- <ion-button  [disabled]="!form.valid"> -->
-        <ion-icon slot="icon-only" name="checkmark"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col sizeSm="6" offsetSm="3">
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="onGoBack()">
+              <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>Edit Products</ion-title>
+          <ion-buttons slot="primary">
+            <ion-button (click)="onConfirmEditProduct()">
+              <!-- <ion-button  [disabled]="!form.valid"> -->
+              <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
 
 <ion-content>
@@ -102,7 +108,7 @@
           <ion-item counter="true">
             <ion-label position="floating">Description</ion-label>
             <ion-textarea
-              rows="2"
+              rows="3"
               formControlName="description"
               maxlength="250"
             ></ion-textarea>
