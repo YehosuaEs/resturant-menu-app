@@ -1,0 +1,16 @@
+ion-content {
+  border: 1px solid green;
+  --background: #fff
+    url("https://img.freepik.com/premium-photo/mexican-food-concept-with-pico-de-gallo-white-background_185193-55268.jpg?w=2000")
+    no-repeat center center / cover;
+}
+.address_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  margin: auto;
+  font-weight: 700;
+}
