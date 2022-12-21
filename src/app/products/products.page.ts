@@ -19,6 +19,7 @@ import {
 export class ProductsPage implements OnInit, OnDestroy {
   products: Product[];
   isLoading: boolean;
+  randomId: number;
   private productsSub!: Subscription;
 
   constructor(
@@ -30,11 +31,13 @@ export class ProductsPage implements OnInit, OnDestroy {
   ) {
     this.products = [];
     this.isLoading = false;
+    this.randomId = 0;
   }
 
   ngOnInit() {
     this.productsSub = this.productService.products.subscribe((products) => {
       this.products = products;
+      this.randomId = Math.floor(Math.random() * products.length);
     });
   }
 
@@ -45,11 +48,15 @@ export class ProductsPage implements OnInit, OnDestroy {
     });
   }
 
+  onDetail(productId: string) {
+    console.log(productId);
+
+    // this.router.navigate(['/', 'products', 'detail', productId]);
+  }
   onEdit(productId: string, sliding: IonItemSliding) {
     sliding.close();
     this.router.navigate(['/', 'products', 'edit', productId]);
   }
-
   onDelete(productId: string, sliding: IonItemSliding) {
     sliding.close();
 
@@ -67,7 +74,7 @@ export class ProductsPage implements OnInit, OnDestroy {
       });
   }
 
-  async onConfirmEditProduct(productId: string, sliding: IonItemSliding) {
+  async onConfirmDeleteProduct(productId: string, sliding: IonItemSliding) {
     const alert = await this.alertController.create({
       header: 'Please confirm!',
       message: 'Are you sure you want to delete this product?',

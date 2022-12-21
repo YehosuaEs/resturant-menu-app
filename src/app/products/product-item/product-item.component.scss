@@ -1,12 +1,8 @@
 ion-thumbnail {
   --size: 140px;
-  --border-radius: 14px;
-  opacity: 0.8;
-  cursor: pointer;
-}
+  --border-radius: 10px;
 
-ion-thumbnail:hover {
-  opacity: 1;
+  cursor: pointer;
 }
 
 ion-label {
