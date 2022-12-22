@@ -1,9 +1,10 @@
 ion-select {
   color: var(--ion-color-dark);
+  padding: 0;
 }
 
 ion-select::part(icon) {
-  transform: scale(2);
+  transform: scale(1.5);
   padding-right: 5px;
 }
 
