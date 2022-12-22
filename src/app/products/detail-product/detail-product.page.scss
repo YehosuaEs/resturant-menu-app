@@ -1,25 +1,13 @@
-ion-list {
-  padding: 0;
-}
 ion-select {
-  padding: 5px 10px 0;
-  color: var(--ion-color-primary);
+  color: var(--ion-color-dark);
 }
 
 ion-select::part(icon) {
   transform: scale(2);
+  padding-right: 5px;
 }
 
 ion-select::part(placeholder) {
   padding: 0 10px;
-  font-weight: 900;
-}
-
-h3,
-p {
-  color: #da9e06;
-}
-
-h3 {
   font-weight: 900;
 }
