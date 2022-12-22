@@ -9,8 +9,12 @@
             </ion-button>
           </ion-buttons>
 
-          <ion-title *ngIf="isLoading"> Loading... please wait </ion-title>
-          <ion-title *ngIf="!isLoading"> {{product.subcategory}} </ion-title>
+          <ion-title color="light" *ngIf="isLoading">
+            Loading... please wait
+          </ion-title>
+          <ion-title color="light" *ngIf="!isLoading">
+            {{product.subcategory}}
+          </ion-title>
         </ion-toolbar>
       </ion-col>
     </ion-row>
@@ -40,10 +44,18 @@
     </ion-row>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" class="ion-text-end">
-        <ion-select placeholder="Actions" (ionChange)="handleChange($event)">
-          <ion-select-option value="edit">Edit</ion-select-option>
-          <ion-select-option value="delete">Delete </ion-select-option>
-        </ion-select>
+        <ion-list>
+          <ion-item lines="none">
+            <ion-label></ion-label>
+            <ion-select
+              (ionChange)="handleChange($event)"
+              placeholder="Edit / Delete"
+            >
+              <ion-select-option value="edit">Edit</ion-select-option>
+              <ion-select-option value="delete">Delete </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
     <ion-row>
