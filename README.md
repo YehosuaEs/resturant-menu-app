@@ -59,7 +59,7 @@ The goal is building a website with CRUD operations using the Ionic Framework an
 ## Preview
 
 <img width="1400" alt="Restaurant App Preview" src="
-https://user-images.githubusercontent.com/93733677/209319362-db8c27e1-5713-4c4d-8058-a278c7df7cfe.jpg
+https://user-images.githubusercontent.com/93733677/209320110-08f73230-2299-4500-8b71-4e6c9a07ed22.png
 ">
 
 <p align="right">(<a href="#top">back to top</a>)
