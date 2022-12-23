@@ -46,7 +46,7 @@ Frontend asignment project from the Ironhack bootcamp.
 The goal is building a website with CRUD operations using the Ionic Framework and Angular.
 
 - <a href="https://trello.com/b/1ch8lhXi/ionic-angular-proyecto-ironhack">Trello</a> : here you can find the link to the trello.
-- <a href="https://docs.google.com/presentation/d/1PJTfxC4U6wz26WAE1cwPah96wtoacL5m5oyfGobn0QA/edit?usp=sharing">Presentation</a> : here you can find the link to the presentation.
+- <a href="https://docs.google.com/presentation/d/1noJfAu0VC0d96vVyPmmZ9pqLcB1yGTONpyLs4a4kXdQ/edit#slide=id.gc6f90357f_0_0">Presentation</a> : here you can find the link to the presentation.
 
 ### Project assets
 
@@ -58,9 +58,7 @@ The goal is building a website with CRUD operations using the Ionic Framework an
 
 ## Preview
 
-<img width="1400" alt="Restaurant App Preview" src="
-https://user-images.githubusercontent.com/93733677/209320110-08f73230-2299-4500-8b71-4e6c9a07ed22.png
-">
+<img width="1400" alt="Restaurant App Preview" src="https://user-images.githubusercontent.com/93733677/209320110-08f73230-2299-4500-8b71-4e6c9a07ed22.png">
 
 <p align="right">(<a href="#top">back to top</a>)
 
