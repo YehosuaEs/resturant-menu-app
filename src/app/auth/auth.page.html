@@ -1,8 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title color="light"
-      >{{isLogin ? 'Hello, welcome back!': 'Hello!'}}</ion-title
-    >
+    <ion-title color="light">{{isLogin ? 'LOGIN': 'SIGNUP'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -36,7 +34,7 @@
           <ion-item>
             <ion-label position="floating" color="dark">Password</ion-label>
             <ion-input
-              type="password"
+              [type]="showPassword ? 'text' : 'password' "
               placeholder="Password"
               ngModel
               name="password"
@@ -44,6 +42,13 @@
               minlength="6"
               #passwordCtrl="ngModel"
             ></ion-input>
+            <ion-icon
+              class="eyeIcon"
+              color="dark"
+              slot="end"
+              [name]="passwordToggleIcon"
+              (click)="onToggleEye()"
+            ></ion-icon>
           </ion-item>
           <ion-item
             class="item_error"
@@ -62,6 +67,8 @@
             expand="block"
             color="primary"
             shape="round"
+            fill="outline"
+            #fill
             [disabled]="!f.valid"
           >
             {{isLogin ? 'Login': 'Signup'}}
@@ -71,7 +78,7 @@
             expand="block"
             fill="clear"
             shape="round"
-            (click)="onSwitchAuthMode(f)"
+            (click)="onSwitchAuthMode(f, fill)"
             class="switchTo"
           >
             Switch to {{isLogin ? 'Signup': 'Login'}}

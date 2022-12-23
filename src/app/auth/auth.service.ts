@@ -1,7 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-interface AuthResponseData {
+
+import { User } from './user.model';
+
+export interface AuthResponseData {
   idToken: string;
   email: string;
   refreshToken: string;
@@ -13,30 +17,66 @@ interface AuthResponseData {
   providedIn: 'root',
 })
 export class AuthService {
-  private _userIsAuthenticated: boolean = false;
+  private _user = new BehaviorSubject<User>(null);
 
-  get userIsAuthenticated(): boolean {
-    return this._userIsAuthenticated;
-  }
-
-  constructor(private http: HttpClient) {}
-
-  signup(email: string, password: string) {
-    return this.http.post<AuthResponseData>(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIkey}`,
-      { email: email, password: password, returnSecureToken: true }
+  get userIsAuthenticated(): Observable<boolean> {
+    return this._user.asObservable().pipe(
+      map((user) => {
+        if (user) {
+          return !!user.token;
+        } else {
+          return false;
+        }
+      })
     );
   }
 
-  login(email: string, password: string) {
-    // this._userIsAuthenticated = true;
-    return this.http.post<AuthResponseData>(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIkey}`,
-      { email: email, password: password, returnSecureToken: true }
+  get userId() {
+    return this._user.asObservable().pipe(
+      map((user) => {
+        if (user) {
+          return user.id;
+        } else {
+          return null;
+        }
+      })
+    );
+  }
+  constructor(private http: HttpClient) {}
+
+  signup(email: string, password: string): Observable<AuthResponseData> {
+    return this.http
+      .post<AuthResponseData>(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseAPIkey}`,
+        { email: email, password: password, returnSecureToken: true }
+      )
+      .pipe(tap(this.setUserData.bind(this)));
+  }
+
+  login(email: string, password: string): Observable<AuthResponseData> {
+    return this.http
+      .post<AuthResponseData>(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseAPIkey}`,
+        { email: email, password: password, returnSecureToken: true }
+      )
+      .pipe(tap(this.setUserData.bind(this)));
+  }
+
+  private setUserData(userData: AuthResponseData) {
+    const expirationTime = new Date(
+      new Date().getTime() + +userData.expiresIn * 1000
+    );
+    this._user.next(
+      new User(
+        userData.localId,
+        userData.email,
+        userData.idToken,
+        expirationTime
+      )
     );
   }
 
   logout() {
-    this._userIsAuthenticated = false;
+    this._user.next(null);
   }
 }
