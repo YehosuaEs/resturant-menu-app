@@ -1,9 +1,90 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>auth</ion-title>
+    <ion-title color="light">{{isLogin ? 'LOGIN': 'SIGNUP'}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-grid>
+      <ion-row>
+        <ion-col sizeSm="4" offsetSm="4">
+          <ion-item>
+            <ion-label position="floating" color="dark">E-mail</ion-label>
+            <ion-input
+              type="email"
+              placeholder="user@email.com"
+              ngModel
+              name="email"
+              required
+              email
+              #emailCtrl="ngModel"
+            ></ion-input>
+          </ion-item>
 
+          <ion-item
+            class="item_error"
+            *ngIf="!emailCtrl.valid && emailCtrl.touched"
+            lines="none"
+          >
+            <ion-icon name="alert-circle" size="small"></ion-icon>
+            <span>Enter a valid email address</span>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating" color="dark">Password</ion-label>
+            <ion-input
+              [type]="showPassword ? 'text' : 'password' "
+              placeholder="Password"
+              ngModel
+              name="password"
+              required
+              minlength="6"
+              #passwordCtrl="ngModel"
+            ></ion-input>
+            <ion-icon
+              class="eyeIcon"
+              color="dark"
+              slot="end"
+              [name]="passwordToggleIcon"
+              (click)="onToggleEye()"
+            ></ion-icon>
+          </ion-item>
+          <ion-item
+            class="item_error"
+            *ngIf="!passwordCtrl.valid && passwordCtrl.touched"
+            lines="none"
+          >
+            <ion-icon name="alert-circle" size="small"></ion-icon>
+            <span>Enter at least 6 characters</span>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col sizeSm="4" offsetSm="4">
+          <ion-button
+            type="submit"
+            expand="block"
+            color="primary"
+            shape="round"
+            fill="outline"
+            #fill
+            [disabled]="!f.valid"
+          >
+            {{isLogin ? 'Login': 'Signup'}}
+          </ion-button>
+          <ion-button
+            type="button"
+            expand="block"
+            fill="clear"
+            shape="round"
+            (click)="onSwitchAuthMode(f, fill)"
+            class="switchTo"
+          >
+            Switch to {{isLogin ? 'Signup': 'Login'}}
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
